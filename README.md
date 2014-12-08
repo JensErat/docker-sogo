@@ -42,6 +42,10 @@ OCSSessionsFolderURL = "postgresql://sogo:sogo@db:5432/sogo/sogo_sessions_folder
 
 SOGo performs schema initialziation lazily on startup, thus no database initialization scripts must be run.
 
+### memcached
+
+As most users will not want to separate memcached, there is a built-in daemon. It can be controled by setting the environment variable `memcached`. If set to `false`, the built-in memcached will not start, make sure to configure an external one. Otherwise, the variable holds the amount of memory dedicated to memcached in MiB. If unset, a default of 64MiB will be used.
+
 ### Sending Mail
 
 For convenience reasons, the gateway is added to the hostsfile as host `GATEWAY` before starting the SOGo daemon. This enables you to use a local MTA in the host machine to forward mail using
@@ -78,7 +82,7 @@ SOGo heavily relies on cron jobs for different purposes. The image provides SOGo
 Unlike the Debian and probably other SOGo packages, the number of worker processes is not set in `/etc/default/sogo`, but the normal `sogo.conf`. Remember to start a reasonable number of worker processes matching to your needs (8 will not be enough for medium and larger instances):
 
 ```c
-WOWorkerCount = 8;
+WOWorkersCount = 8;
 ```
 
 All other configuration options have no special considerations.
