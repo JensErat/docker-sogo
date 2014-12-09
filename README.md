@@ -4,6 +4,18 @@
 
 This Dockerfile packages SOGo as packaged by Inverse, SOGo's creators, together with Apache 2 and memcached.
 
+There are different flavors of this Docker image, added as tags. To checkout a specific flavor, use `jenserat/docker:[tag]` as image name. RBby default, `latest` wil be used.
+
+  - **latest**: normal SOGo release
+  - **activesync**: like latest, but includes ActiveSync components
+  
+    Please be aware that ActiveSync uses patented technology and might require negotiating with Microsoft. From the [SOGo documentation](http://www.sogo.nu/files/docs/SOGo%20Installation%20Guide.pdf):
+
+    > In order to use the SOGo ActiveSync support code in production
+    > environments, you need to get a proper usage license from Microsoft.
+    > Please contact them directly to negotiate the fees associated to your
+    > user base.
+
 ## Setup
 
 The image stores configuration, logs and backups in `/srv`, which you should persist somewhere. Example configuration is copied during each startup of the container, which you can adjust for your own use. For creating the initial directory hierarchy and example configuration, simply run the container with the `/srv` volume already exposed or linked, for example using
@@ -61,7 +73,7 @@ For further details in MTA configuration including SMTP auth, refer to SOGo's do
 
 As already given above, the default Apache configuration is already available under `etc/apache-SOGo.conf.orig`. The container exposes HTTP (80), HTTPS (443) and 8800, which is used by Apple devices, and 20000, the default port the SOGo daemon listens on. You can either directly include the certificates within the container, or use an external proxy for this. Make sure to only map the required ports to not unnecessarily expose daemons.
 
-You need to adjust the `<Proxy ...>` section and include port, server name and url to match your setup.  
+You need to adjust the `<Proxy ...>` section and include port, server name and url to match your setup.
 
 ```apache
 <Proxy http://127.0.0.1:20000/SOGo>
@@ -72,6 +84,13 @@ You need to adjust the `<Proxy ...>` section and include port, server name and u
 ```
 
 If you want to support iOS-devices, add appropriate `.well-known`-rewrites in either the Apache configuration or an external proxy.
+
+For ActiveSync support, additionally add/uncomment the following lines:
+
+    ProxyPass /Microsoft-Server-ActiveSync \
+      http://127.0.0.1:20000/SOGo/Microsoft-Server-ActiveSync \
+      retry=60 connectiontimeout=5 timeout=360
+
 
 ### Cron-Jobs: Backup, Session Timeout, Sieve
 
@@ -84,6 +103,8 @@ Unlike the Debian and probably other SOGo packages, the number of worker process
 ```c
 WOWorkersCount = 8;
 ```
+
+ActiveSync requires one worker per concurrent connection.
 
 All other configuration options have no special considerations.
 
