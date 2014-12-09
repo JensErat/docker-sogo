@@ -4,10 +4,11 @@
 
 This Dockerfile packages SOGo as packaged by Inverse, SOGo's creators, together with Apache 2 and memcached.
 
-There are different flavors of this Docker image, added as tags. To checkout a specific flavor, use `jenserat/docker:[tag]` as image name. RBby default, `latest` wil be used.
+There are different flavors of this Docker image, added as tags. To checkout a specific flavor, use `jenserat/docker:[tag]` as image name. By default, `latest` wil be used.
 
   - **latest**: normal SOGo release
-  - **activesync**: like latest, but includes ActiveSync components
+  - **nightly**: nightly builds, rebuild automatically
+  - **activesync**: like latest, but includes ActiveSync module
   
     Please be aware that ActiveSync uses patented technology and might require negotiating with Microsoft. From the [SOGo documentation](http://www.sogo.nu/files/docs/SOGo%20Installation%20Guide.pdf):
 
@@ -15,6 +16,8 @@ There are different flavors of this Docker image, added as tags. To checkout a s
     > environments, you need to get a proper usage license from Microsoft.
     > Please contact them directly to negotiate the fees associated to your
     > user base.
+
+  - **activesync-nightly**: like nightly, but includes ActiveSync module
 
 ## Setup
 
