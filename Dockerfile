@@ -26,8 +26,6 @@ ADD memcached.sh /etc/service/memcached/run
 # Make GATEWAY host available, control memcached startup
 RUN mkdir -p /etc/my_init.d
 ADD gateway.sh memcached-control.sh /etc/my_init.d/
-# https://github.com/phusion/baseimage-docker#workaroud_modifying_etc_hosts
-RUN /usr/bin/workaround-docker-2267
 
 # Interface the environment
 VOLUME /srv
