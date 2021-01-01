@@ -1,3 +1,7 @@
+# Unmaintained
+
+I stopped using SOGo some time ago. This repository and the image is not maintained any more.
+
 # SOGo for Docker
 
 [SOGo](http://www.sogo.nu) is fully supported and trusted groupware server with a focus on scalability and open standards. SOGo is released under the GNU GPL/LGPL v2 and above. 
